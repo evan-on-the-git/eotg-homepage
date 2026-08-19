@@ -28,31 +28,45 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Modal Control
-    const modal = document.getElementById('settingsModal');
-    const openBtn = document.getElementById('openSettingsBtn');
-    const closeBtn = document.getElementById('closeSettingsBtn');
+    // Settings Modal
+    const settingsModal = document.getElementById('settingsModal');
+    const openSettingsBtn = document.getElementById('openSettingsBtn');
+    const closeSettingsBtn = document.getElementById('closeSettingsBtn');
 
-    if (openBtn && modal) {
-        openBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            modal.classList.add('active');
-        });
+    if (openSettingsBtn && settingsModal) {
+        openSettingsBtn.addEventListener('click', () => settingsModal.classList.add('active'));
+    }
+    if (closeSettingsBtn && settingsModal) {
+        closeSettingsBtn.addEventListener('click', () => settingsModal.classList.remove('active'));
     }
 
-    if (closeBtn && modal) {
-        closeBtn.addEventListener('click', () => {
-            modal.classList.remove('active');
-        });
+    // Add Bookmark Modal
+    const addBookmarkModal = document.getElementById('addBookmarkModal');
+    const openAddModalBtn = document.getElementById('openAddModalBtn');
+    const closeAddModalBtn = document.getElementById('closeAddModalBtn');
+    const cancelAddBtn = document.getElementById('cancelAddBtn');
+    const confirmAddBtn = document.getElementById('confirmAddBtn');
+
+    function openAddModal() {
+        document.getElementById('siteTitle').value = '';
+        document.getElementById('siteUrl').value = '';
+        addBookmarkModal.classList.add('active');
+        document.getElementById('siteTitle').focus();
     }
 
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-            }
-        });
+    function closeAddModal() {
+        addBookmarkModal.classList.remove('active');
     }
+
+    if (openAddModalBtn) openAddModalBtn.addEventListener('click', openAddModal);
+    if (closeAddModalBtn) closeAddModalBtn.addEventListener('click', closeAddModal);
+    if (cancelAddBtn) cancelAddBtn.addEventListener('click', closeAddModal);
+
+    // Close modals on background overlay click
+    window.addEventListener('click', (e) => {
+        if (e.target === settingsModal) settingsModal.classList.remove('active');
+        if (e.target === addBookmarkModal) closeAddModal();
+    });
 
     // Search Engine Configuration
     const engines = {
@@ -124,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function addLink() {
+    function saveAndAddLink() {
         const nameEl = document.getElementById('siteTitle');
         const urlEl = document.getElementById('siteUrl');
         
@@ -141,21 +155,24 @@ document.addEventListener('DOMContentLoaded', () => {
         links.push({ name, url });
         localStorage.setItem('startpage_links', JSON.stringify(links));
 
-        nameEl.value = '';
-        urlEl.value = '';
+        closeAddModal();
         renderLinks();
     }
+
+    if (confirmAddBtn) {
+        confirmAddBtn.addEventListener('click', saveAndAddLink);
+    }
+
+    // Submit on Enter key inside modal inputs
+    document.getElementById('siteUrl').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') saveAndAddLink();
+    });
 
     function removeLink(index) {
         const links = getLinks();
         links.splice(index, 1);
         localStorage.setItem('startpage_links', JSON.stringify(links));
         renderLinks();
-    }
-
-    const addBtn = document.getElementById('addBtn');
-    if (addBtn) {
-        addBtn.addEventListener('click', addLink);
     }
 
     renderLinks();
