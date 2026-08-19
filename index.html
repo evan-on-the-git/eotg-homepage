@@ -3,8 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Start</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Startpage</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #121214;
+            color: #e1e1e6;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        #clock {
+            font-size: 3.5rem;
+            font-weight: 600;
+            letter-spacing: -1px;
+            color: #ffffff;
+        }
+
+        .search-form {
+            width: 100%;
+        }
+
+        .search-form input {
+            width: 100%;
+            padding: 14px 20px;
+            background: #1e1e22;
+            border: 1px solid #2e2e34;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-form input:focus {
+            border-color: #484854;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+        }
+
+        .bookmarks {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 12px;
+        }
+
+        .card-wrapper {
+            position: relative;
+        }
+
+        .bookmark-card {
+            display: block;
+            padding: 12px 16px;
+            background: #1e1e22;
+            border: 1px solid #2e2e34;
+            border-radius: 10px;
+            color: #c4c4cc;
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: background 0.2s, color 0.2s, transform 0.1s;
+        }
+
+        .bookmark-card:hover {
+            color: #fff;
+            background: #282830;
+            transform: translateY(-2px);
+        }
+
+        .del-btn {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #e5484d;
+            color: #fff;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            display: none;
+            line-height: 1;
+        }
+
+        .card-wrapper:hover .del-btn {
+            display: block;
+        }
+
+        .add-box {
+            width: 100%;
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .add-box input {
+            padding: 10px 14px;
+            background: #18181c;
+            border: 1px solid #2e2e34;
+            border-radius: 8px;
+            color: #eee;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .add-box input[type="text"]:nth-child(1) { flex: 1; }
+        .add-box input[type="text"]:nth-child(2) { flex: 2; }
+
+        .add-box button {
+            padding: 10px 16px;
+            background: #2e2e38;
+            color: #fff;
+            border: 1px solid #3e3e4a;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-box button:hover {
+            background: #3e3e4a;
+        }
+    </style>
 </head>
 <body>
 
@@ -12,18 +155,109 @@
         <header id="clock">00:00:00 AM</header>
 
         <form class="search-form" action="https://www.google.com/search" method="GET">
-            <input type="text" name="q" placeholder="search web..." autocomplete="off" autofocus>
+            <input type="text" name="q" placeholder="Search Google..." autocomplete="off" autofocus>
         </form>
 
         <nav class="bookmarks" id="bookmarksGrid"></nav>
 
         <section class="add-box">
-            <input type="text" id="siteTitle" placeholder="label">
-            <input type="text" id="siteUrl" placeholder="url">
-            <button type="button" id="addBtn">+ add</button>
+            <input type="text" id="siteTitle" placeholder="Label">
+            <input type="text" id="siteUrl" placeholder="URL">
+            <button type="button" id="addBtn">+ Add</button>
         </section>
     </main>
 
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            function updateClock() {
+                const now = new Date();
+                document.getElementById('clock').innerText = now.toLocaleTimeString('en-US', { 
+                    timeZone: 'America/Chicago',
+                    hour: 'numeric', 
+                    minute: '2-digit', 
+                    second: '2-digit', 
+                    hour12: true 
+                });
+            }
+            setInterval(updateClock, 1000);
+            updateClock();
+
+            const defaults = [
+                { name: "YouTube", url: "https://youtube.com" },
+                { name: "GitHub", url: "https://github.com" },
+                { name: "Reddit", url: "https://reddit.com" }
+            ];
+
+            function getLinks() {
+                const data = localStorage.getItem('startpage_links');
+                return data ? JSON.parse(data) : defaults;
+            }
+
+            function renderLinks() {
+                const links = getLinks();
+                const grid = document.getElementById('bookmarksGrid');
+                grid.innerHTML = '';
+
+                links.forEach((item, idx) => {
+                    const wrap = document.createElement('div');
+                    wrap.className = 'card-wrapper';
+
+                    const card = document.createElement('a');
+                    card.className = 'bookmark-card';
+                    card.href = item.url;
+                    card.innerText = item.name;
+
+                    const del = document.createElement('button');
+                    del.className = 'del-btn';
+                    del.innerText = '×';
+                    del.onclick = (e) => {
+                        e.preventDefault();
+                        removeLink(idx);
+                    };
+
+                    wrap.appendChild(card);
+                    wrap.appendChild(del);
+                    grid.appendChild(wrap);
+                });
+            }
+
+            function addLink() {
+                const nameEl = document.getElementById('siteTitle');
+                const urlEl = document.getElementById('siteUrl');
+                
+                let name = nameEl.value.trim();
+                let url = urlEl.value.trim();
+
+                if (!name || !url) return;
+
+                if (!/^https?:\/\//i.test(url)) {
+                    url = 'https://' + url;
+                }
+
+                const links = getLinks();
+                links.push({ name, url });
+                localStorage.setItem('startpage_links', JSON.stringify(links));
+
+                nameEl.value = '';
+                urlEl.value = '';
+                renderLinks();
+            }
+
+            function removeLink(index) {
+                const links = getLinks();
+                links.splice(index, 1);
+                localStorage.setItem('startpage_links', JSON.stringify(links));
+                renderLinks();
+            }
+
+            const btn = document.getElementById('addBtn');
+            if (btn) {
+                btn.addEventListener('click', addLink);
+            }
+
+            renderLinks();
+        });
+    </script>
 </body>
 </html>
