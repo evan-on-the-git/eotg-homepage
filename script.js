@@ -13,6 +13,21 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateClock, 1000);
     updateClock();
 
+    // Theme Switcher Logic
+    const themeSelect = document.getElementById('themeSelect');
+
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('startpage_theme', theme);
+    }
+
+    const savedTheme = localStorage.getItem('startpage_theme') || 'dark';
+    if (themeSelect) {
+        themeSelect.value = savedTheme;
+        themeSelect.addEventListener('change', (e) => setTheme(e.target.value));
+    }
+    setTheme(savedTheme);
+
     // Modal Control
     const modal = document.getElementById('settingsModal');
     const openBtn = document.getElementById('openSettingsBtn');
