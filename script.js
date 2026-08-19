@@ -1,18 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 12-Hour Clock (OS System Time)
-    function updateClock() {
-        const now = new Date();
-        document.getElementById('clock').innerText = now.toLocaleTimeString([], { 
-            hour: 'numeric', 
-            minute: '2-digit', 
-            second: '2-digit', 
-            hour12: true 
-        });
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
     // Theme Switcher Logic
     const themeSelect = document.getElementById('themeSelect');
 
@@ -27,6 +14,19 @@ document.addEventListener('DOMContentLoaded', () => {
         themeSelect.addEventListener('change', (e) => setTheme(e.target.value));
     }
     setTheme(savedTheme);
+
+    // 12-Hour Clock (OS System Time)
+    function updateClock() {
+        const now = new Date();
+        document.getElementById('clock').innerText = now.toLocaleTimeString([], { 
+            hour: 'numeric', 
+            minute: '2-digit', 
+            second: '2-digit', 
+            hour12: true 
+        });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
 
     // Modal Control
     const modal = document.getElementById('settingsModal');
