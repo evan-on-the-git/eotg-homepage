@@ -5,6 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Startpage</title>
     <style>
+        /* CSS Variables for Themes */
+        :root {
+            --bg-color: #121214;
+            --card-bg: #1e1e22;
+            --card-border: #2e2e34;
+            --text-color: #e1e1e6;
+            --text-muted: #8e8e93;
+            --clock-color: #ffffff;
+            --input-bg: #18181c;
+            --button-bg: #2e2e38;
+            --button-border: #3e3e4a;
+            --button-hover: #3e3e4a;
+            --card-hover: #282830;
+            --modal-overlay: rgba(0, 0, 0, 0.75);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f4f4f6;
+            --card-bg: #ffffff;
+            --card-border: #d0d0d5;
+            --text-color: #1c1c1e;
+            --text-muted: #6e6e73;
+            --clock-color: #1c1c1e;
+            --input-bg: #ffffff;
+            --button-bg: #e5e5ea;
+            --button-border: #d0d0d5;
+            --button-hover: #d1d1d6;
+            --card-hover: #f0f0f5;
+            --modal-overlay: rgba(0, 0, 0, 0.4);
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -12,8 +43,8 @@
         }
 
         body {
-            background-color: #121214;
-            color: #e1e1e6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             display: flex;
             justify-content: center;
@@ -21,16 +52,17 @@
             min-height: 100vh;
             padding: 20px;
             position: relative;
+            transition: background-color 0.2s, color 0.2s;
         }
 
-        /* Top Right Settings Gear Button */
+        /* Settings Gear Button */
         .settings-btn {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #1e1e22;
-            border: 1px solid #2e2e34;
-            color: #8e8e93;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
             cursor: pointer;
             padding: 10px;
             border-radius: 50%;
@@ -42,9 +74,9 @@
         }
 
         .settings-btn:hover {
-            color: #ffffff;
-            background: #282830;
-            border-color: #484854;
+            color: var(--text-color);
+            background: var(--card-hover);
+            border-color: var(--button-border);
         }
 
         .settings-btn svg {
@@ -61,7 +93,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.75);
+            background: var(--modal-overlay);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -77,38 +109,40 @@
         }
 
         .modal {
-            background: #1e1e22;
-            border: 1px solid #2e2e34;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             border-radius: 12px;
             padding: 24px;
             width: 90%;
             max-width: 380px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
         }
 
         .modal-header h3 {
             font-size: 1.1rem;
-            color: #fff;
+            color: var(--text-color);
         }
 
         .close-btn {
             background: transparent;
             border: none;
-            color: #8e8e93;
+            color: var(--text-muted);
             font-size: 1.5rem;
             cursor: pointer;
             line-height: 1;
         }
 
         .close-btn:hover {
-            color: #fff;
+            color: var(--text-color);
         }
 
         .setting-group {
@@ -119,15 +153,15 @@
 
         .setting-group label {
             font-size: 0.85rem;
-            color: #a0a0a8;
+            color: var(--text-muted);
         }
 
         .setting-group select {
             padding: 10px;
-            background: #121214;
-            border: 1px solid #2e2e34;
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
             border-radius: 8px;
-            color: #fff;
+            color: var(--text-color);
             font-size: 0.95rem;
             outline: none;
         }
@@ -145,7 +179,7 @@
             font-size: 3.5rem;
             font-weight: 600;
             letter-spacing: -1px;
-            color: #ffffff;
+            color: var(--clock-color);
         }
 
         .search-form {
@@ -157,24 +191,24 @@
         .search-form input {
             flex: 1;
             padding: 14px 18px;
-            background: #1e1e22;
-            border: 1px solid #2e2e34;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             border-radius: 12px;
-            color: #fff;
+            color: var(--text-color);
             font-size: 1rem;
             outline: none;
             transition: border-color 0.2s;
         }
 
         .search-form input:focus {
-            border-color: #484854;
+            border-color: var(--button-border);
         }
 
         .search-btn {
             padding: 0 20px;
-            background: #2e2e38;
-            color: #fff;
-            border: 1px solid #3e3e4a;
+            background: var(--button-bg);
+            color: var(--text-color);
+            border: 1px solid var(--button-border);
             border-radius: 12px;
             font-size: 0.95rem;
             font-weight: 600;
@@ -186,7 +220,7 @@
         }
 
         .search-btn:hover, .search-btn:active {
-            background: #3e3e4a;
+            background: var(--button-hover);
         }
 
         .bookmarks {
@@ -203,10 +237,10 @@
         .bookmark-card {
             display: block;
             padding: 12px 14px;
-            background: #1e1e22;
-            border: 1px solid #2e2e34;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             border-radius: 10px;
-            color: #c4c4cc;
+            color: var(--text-color);
             text-decoration: none;
             font-size: 0.9rem;
             text-align: center;
@@ -217,8 +251,7 @@
         }
 
         .bookmark-card:hover {
-            color: #fff;
-            background: #282830;
+            background: var(--card-hover);
         }
 
         .del-btn {
@@ -264,10 +297,10 @@
 
         .add-box input {
             padding: 10px 14px;
-            background: #18181c;
-            border: 1px solid #2e2e34;
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
             border-radius: 8px;
-            color: #eee;
+            color: var(--text-color);
             font-size: 0.85rem;
             outline: none;
         }
@@ -277,9 +310,9 @@
 
         .add-box button {
             padding: 10px 16px;
-            background: #2e2e38;
-            color: #fff;
-            border: 1px solid #3e3e4a;
+            background: var(--button-bg);
+            color: var(--text-color);
+            border: 1px solid var(--button-border);
             border-radius: 8px;
             font-size: 0.85rem;
             font-weight: 600;
@@ -292,7 +325,7 @@
     <!-- Settings Gear Button -->
     <button type="button" class="settings-btn" id="openSettingsBtn" aria-label="Settings">
         <svg viewBox="0 0 24 24">
-            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6-3.6 3.6z"/>
+            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
         </svg>
     </button>
 
@@ -303,6 +336,15 @@
                 <h3>Settings</h3>
                 <button type="button" class="close-btn" id="closeSettingsBtn">&times;</button>
             </div>
+            
+            <div class="setting-group">
+                <label for="themeSelect">Theme</label>
+                <select id="themeSelect">
+                    <option value="dark">Dark</option>
+                    <option value="light">Clear (Light)</option>
+                </select>
+            </div>
+
             <div class="setting-group">
                 <label for="engineSelect">Search Engine</label>
                 <select id="engineSelect">
