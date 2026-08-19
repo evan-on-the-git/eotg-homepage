@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 12-Hour Clock (Matches OS System Timezone)
+    // 12-Hour Clock (OS System Time)
     function updateClock() {
         const now = new Date();
         document.getElementById('clock').innerText = now.toLocaleTimeString([], { 
@@ -12,6 +12,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     setInterval(updateClock, 1000);
     updateClock();
+
+    // Modal Control
+    const modal = document.getElementById('settingsModal');
+    const openBtn = document.getElementById('openSettingsBtn');
+    const closeBtn = document.getElementById('closeSettingsBtn');
+
+    if (openBtn && modal) {
+        openBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            modal.classList.add('active');
+        });
+    }
+
+    if (closeBtn && modal) {
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+    }
+
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    }
 
     // Search Engine Configuration
     const engines = {
@@ -27,31 +53,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setSearchEngine(key) {
         const selected = engines[key] || engines.google;
-        searchForm.action = selected.action;
-        searchInput.name = selected.param;
-        searchInput.placeholder = selected.placeholder;
+        if (searchForm) searchForm.action = selected.action;
+        if (searchInput) {
+            searchInput.name = selected.param;
+            searchInput.placeholder = selected.placeholder;
+        }
         localStorage.setItem('startpage_engine', key);
     }
 
-    // Load saved search engine choice
     const savedEngine = localStorage.getItem('startpage_engine') || 'google';
-    engineSelect.value = savedEngine;
+    if (engineSelect) {
+        engineSelect.value = savedEngine;
+        engineSelect.addEventListener('change', (e) => setSearchEngine(e.target.value));
+    }
     setSearchEngine(savedEngine);
-
-    engineSelect.addEventListener('change', (e) => {
-        setSearchEngine(e.target.value);
-    });
-
-    // Modal UI Handlers
-    const modal = document.getElementById('settingsModal');
-    const openBtn = document.getElementById('openSettingsBtn');
-    const closeBtn = document.getElementById('closeSettingsBtn');
-
-    openBtn.addEventListener('click', () => modal.classList.add('active'));
-    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) modal.classList.remove('active');
-    });
 
     // Bookmarks Logic
     const defaults = [
@@ -68,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderLinks() {
         const links = getLinks();
         const grid = document.getElementById('bookmarksGrid');
+        if (!grid) return;
         grid.innerHTML = '';
 
         links.forEach((item, idx) => {
