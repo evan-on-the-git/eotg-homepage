@@ -2,118 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Startpage</title>
-    <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        #clock {
-            font-size: 4rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .search-box {
-            margin-bottom: 30px;
-        }
-        .search-box input {
-            padding: 12px 20px;
-            width: 300px;
-            border-radius: 20px;
-            border: 1px solid #333;
-            background: #1e1e1e;
-            color: #fff;
-            outline: none;
-            text-align: center;
-        }
-        .shortcuts {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-            max-width: 600px;
-            margin-bottom: 30px;
-        }
-        .card-container {
-            position: relative;
-        }
-        .card {
-            display: inline-block;
-            padding: 15px 25px;
-            background: #1e1e1e;
-            border-radius: 8px;
-            color: #00adb5;
-            text-decoration: none;
-            transition: transform 0.2s, background 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-3px);
-            background: #252525;
-        }
-        .delete-btn {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ff5252;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            display: none;
-        }
-        .card-container:hover .delete-btn {
-            display: block;
-        }
-        .add-form {
-            display: flex;
-            gap: 10px;
-        }
-        .add-form input {
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 1px solid #333;
-            background: #1e1e1e;
-            color: #fff;
-        }
-        .add-form button {
-            padding: 8px 16px;
-            border-radius: 6px;
-            border: none;
-            background: #00adb5;
-            color: #121212;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .add-form button:hover {
-            background: #008c93;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="clock">00:00:00</div>
+    <main class="container">
+        <header id="clock">00:00:00 AM</header>
 
-    <form class="search-box" action="https://www.google.com/search" method="GET">
-        <input type="text" name="q" placeholder="Search the web..." autofocus>
-    </form>
+        <form class="search-form" action="https://www.google.com/search" method="GET">
+            <input type="text" name="q" placeholder="search web..." autocomplete="off" autofocus>
+        </form>
 
-    <div class="shortcuts" id="shortcutsList"></div>
+        <nav class="bookmarks" id="bookmarksGrid"></nav>
 
-    <div class="add-form">
-        <input type="text" id="siteTitle" placeholder="Name (e.g. Google)">
-        <input type="text" id="siteUrl" placeholder="URL (e.g. https://google.com)">
-        <button id="addBtn">Add Link</button>
-    </div>
+        <section class="add-box">
+            <input type="text" id="siteTitle" placeholder="label">
+            <input type="text" id="siteUrl" placeholder="url">
+            <button type="button" id="addBtn">+ add</button>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>
